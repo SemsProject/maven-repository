@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.biopax.paxtools</groupId>
+  <artifactId>paxtools</artifactId>
+  <version>4.3.0-SNAPSHOT</version>
+  <versioning>
+    <versions>
+      <version>4.3.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20141030125756</lastUpdated>
+  </versioning>
+</metadata>

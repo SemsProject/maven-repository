@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.biopax.paxtools</groupId>
+	<artifactId>paxtools</artifactId>
+	<version>4.3.0-SNAPSHOT</version>
+
+	<name>Paxtools</name>
+	<packaging>pom</packaging>
+	<description>Paxtools is a Java library that allows software to read, write, analyze and manipulate BioPAX models.
+		Paxtools provide a consistent, fully implemented, validating BioPAX API that significantly reduces development
+		time of oftware that require programmatic access to BioPAX. Paxtools is modular, lightweight and platform
+		independent to be easily embedded into applications.
+	</description>
+	
+	<url>${siteUrl}</url>
+
+	<modules>
+        <module>paxtools-core</module>
+        <module>paxtools-jena-io</module>
+		<module>sif-converter</module>
+		<module>gsea-converter</module>
+		<module>psimi-converter</module>
+		<module>sbgn-converter</module>
+		<module>paxtools-console</module>
+		<module>paxtools-query</module>
+		<module>paxtools-trove</module>
+        <module>paxtools-archetype</module>
+        <module>json-converter</module>
+        <module>paxtools-search</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
+<!-- with maven 3, unlike ${project.version}, the ${biopax.site.url} is somehow not resolved 
+ (from local settings.xml), and then 'modules' links suck; so - will use the firm URL prefix: -->
+<!-- <siteDeployUrl>${biopax.site.url}/paxtools-${project.version}</siteDeployUrl> -->
+		<siteDeployUrl>scp://shell.sourceforge.net/home/project-web/biopax/htdocs/m2site/paxtools-${project.version}</siteDeployUrl>
+		<siteUrl>http://www.biopax.org/m2site/paxtools-${project.version}</siteUrl>	
+		
+		<junit.version>4.10</junit.version>
+		<commons-logging.version>1.1.1</commons-logging.version>
+		<log4j.version>1.2.13</log4j.version>
+		<hibernate-core.version>4.2.7.Final</hibernate-core.version>
+		<hibernate-search.version>4.3.0.Final</hibernate-search.version>
+		<commons-lang.version>2.6</commons-lang.version>
+		<collections-generic.version>4.01</collections-generic.version>
+		
+		<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
+		<maven-war-plugin.version>2.3</maven-war-plugin.version>
+		<maven-release-plugin.version>2.4</maven-release-plugin.version>
+		<wagon-ssh.version>2.0</wagon-ssh.version>
+		<maven-surefire-plugin.version>2.12</maven-surefire-plugin.version>
+		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+		
+		<maven-site-plugin.version>3.3</maven-site-plugin.version>
+		<maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
+		<maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
+		<maven-project-info-reports-plugin.version>2.6</maven-project-info-reports-plugin.version>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>emekdemir</id>
+			<name>Emek Demir</name>
+			<organization>CBIO MSKCC</organization>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>rodche</id>
+			<name>Igor Rodchenkov</name>
+			<organization>University of Toronto</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ozgunbabur</id>
+			<name>Ozgun Babur</name>
+			<organization>CBIO MSKCC</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>kenichirofukuda</id>
+			<name>Ken-Ichiro Fukuda</name>
+			<organization />
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>armanaksoy</id>
+			<name>B. Arman Aksoy</name>
+			<organization>CBIO MSKCC</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>benjamingross</id>
+			<name>Benjamin Gross</name>
+			<organization>CBIO MSKCC</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<mailingLists>
+		<mailingList>
+			<name>BioPAX Discussion Group</name>
+			<post>biopax-discuss@googlegroups.com</post>
+		</mailingList>
+	</mailingLists>
+
+	<licenses>
+		<license>
+			<name>LGPL 2.0 license</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system>SF</system>
+		<url>http://sourceforge.net/p/biopax/bugs/</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://cbiojenkins.no-ip.org:8080/job/Paxtools</url>
+	</ciManagement>
+	
+	<!--
+	     See the following wiki document for details on how to do the setup for deploying/releasing
+	     http://sourceforge.net/apps/mediawiki/biopax/index.php?title=Deploying_Paxtools
+	-->
+	<!-- basically, two things: 
+	 1) for maven artifacts deployment (mvn deploy), e.g. by Jenkins, have biopax.snapshot.url 
+	 and biopax.release.url set in your .m2/settings.xml and point to a local directory, which
+	 then can be synchronized (rsync) with the remote public biopax repositories as needed 
+	 (recommended method, which is quick, does not require you start the remote shell service 
+	 in advance, and also respects your intranet/firewall/security policies). 
+	 So, do NOT: mvn deploy -Psourceforge, because it's slow, may violate network policy (brute force), etc.
+	 
+	 2) try: mvn clean site site:stage -DstagingDirectory=/some/local/path/paxtools-${version}
+	 (though some of resulting links won't be right), but not site-stage...; 
+	 finally, once satisfied, start sf.net shell and do: mvn clean site-deploy -Psourceforge 
+	 (this deploys directly to the public website, where all links should work)
+	-->
+	<profiles>
+		<profile>
+			<id>sourceforge</id>
+			<properties>
+				<biopax.snapshot.url>scp://shell.sourceforge.net/home/project-web/biopax/htdocs/m2repo/snapshots</biopax.snapshot.url>
+				<biopax.release.url>scp://shell.sourceforge.net/home/project-web/biopax/htdocs/m2repo/releases</biopax.release.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>maven-3</id>
+			<activation>
+				<file>
+					<exists>${basedir}</exists>
+				</file>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-site-plugin</artifactId>
+							<version>${maven-site-plugin.version}</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-site-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-descriptor</id>
+								<goals>
+									<goal>attach-descriptor</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+        <profile>
+            <id>release</id>
+            <!-- build plugin configuration for the deploy -->
+            <!-- not necessary to always nclude the sources and javadocs -->
+            <build>
+                <plugins>
+                    <!-- attach sources -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+
+                        <configuration>
+                            <attach>true</attach>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- attach javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+	</profiles>
+
+	<scm>
+		<connection>scm:hg:http://hg.code.sf.net/p/biopax/paxtools</connection>
+		<developerConnection>scm:hg:ssh://${scm.username}@hg.code.sf.net/p/biopax/paxtools</developerConnection>
+		<url>http://sourceforge.net/p/biopax/paxtools</url>
+<!-- 	  	<tag>tip</tag> -->
+	  <tag>HEAD</tag>
+  </scm>
+
+	<!--distributionManagement>
+		<site>
+			<id>biopax.sf.net</id>
+			<name>BioPAX Sourceforge site</name>
+			<url>${siteDeployUrl}</url>
+		</site>
+		<snapshotRepository>
+			<id>biopax.snapshots</id>
+			<name>BioPAX Snapshots Repository</name>
+			<url>${biopax.snapshot.url}</url>
+		</snapshotRepository>
+		<repository>
+			<id>biopax.releases</id>
+			<name>BioPAX Releases Repository</name>
+			<url>${biopax.release.url}</url>
+		</repository>
+		<downloadUrl>http://www.biopax.org/downloads/paxtools/</downloadUrl>
+	</distributionManagement-->
+
+
+    <distributionManagement>
+        <downloadUrl>http://mvn.sems.uni-rostock.de</downloadUrl>
+        <snapshotRepository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>sems-maven-repository</id>
+            <name>SEMS Maven Release Repository</name>
+            <url>scp://sems.uni-rostock.de:/home/stuff/web/mvn/snapshots/</url>
+            <layout>default</layout>
+        </snapshotRepository>
+
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>sems-maven-repository</id>
+            <name>Enterprise Systems Maven Repository</name>
+            <url>scp://sems.uni-rostock.de:/home/stuff/web/mvn/releases/</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
+
+
+	<organization>
+		<name>BioPAX</name>
+		<url>http://www.biopax.org</url>
+	</organization>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven-source-plugin.version}</version>
+				</plugin>
+				<plugin>
+        			<groupId>org.apache.maven.plugins</groupId>
+        			<artifactId>maven-release-plugin</artifactId>
+        			<version>${maven-release-plugin.version}</version>
+      			</plugin>
+      			<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>${maven-jxr-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>${maven-project-info-reports-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<!-- when not using maven 3.x -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>${wagon-ssh.version}</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<testFailureIgnore>false</testFailureIgnore>
+					<!-- enable assertions during the tests -->
+					<argLine>-ea</argLine>
+				</configuration>
+			</plugin>
+     	 	<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-release-plugin</artifactId>
+        		<configuration>
+        			<autoVersionSubmodules>true</autoVersionSubmodules>
+        		</configuration>
+      		</plugin> 
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${commons-logging.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.1.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <version>${hibernate-search.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+			<groupId>net.sourceforge.collections</groupId>
+			<artifactId>collections-generic</artifactId>
+			<version>${collections-generic.version}</version>
+		</dependency>
+         <dependency>
+         	<groupId>commons-lang</groupId>
+         	<artifactId>commons-lang</artifactId>
+         	<version>${commons-lang.version}</version>
+         </dependency>
+         <dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.12</version>
+         </dependency>
+        <dependency>
+        	<groupId>com.hp.hpl.jena</groupId>
+        	<artifactId>jena</artifactId>
+        	<version>2.5.7</version>
+        </dependency>
+	</dependencies>	
+	</dependencyManagement>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>biopax.snapshots</id>
+			<name>BioPAX Snapshots Repository at Sourceforge</name>
+			<url>http://www.biopax.org/m2repo/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>biopax.releases</id>
+			<name>BioPAX Repository at Sourceforge</name>
+			<url>http://www.biopax.org/m2repo/releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ebi-repo</id>
+			<name>The EBI internal repository</name>
+			<url>http://www.ebi.ac.uk/~maven/m2repo</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ebi-repo-snapshots</id>
+			<name>The EBI internal repository</name>
+			<url>http://www.ebi.ac.uk/~maven/m2repo_snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>codehaus</id>
+			<url>http://repository.codehaus.org/org/codehaus</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>		
+	</repositories>
+
+	<!-- the following is used both by Maven 3.x and 2.x -->
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+              		<linksource>true</linksource>
+              		<notimestamp>true</notimestamp>
+              	<links combine.children="append">
+              		<link>http://docs.jboss.org/hibernate/search/4.2/api/</link>
+              		<link>http://docs.jboss.org/hibernate/core/4.2/javadocs/</link>
+              	</links>
+            	</configuration>
+            	<reportSets>
+              		<reportSet>
+                		<id>aggregate</id>
+                		<inherited>false</inherited>
+                		<reports>
+                  			<report>aggregate</report>
+                		</reports>
+              		</reportSet>
+            	</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<reportSets>
+              		<reportSet>
+                		<id>aggregate</id>
+                		<inherited>false</inherited>
+                		<reports>
+                  			<report>aggregate</report>
+                		</reports>
+              		</reportSet>
+            	</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
+
