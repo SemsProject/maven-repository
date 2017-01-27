@@ -20,7 +20,7 @@ Using this Maven Repository
 
 To allow Maven to automatically fetch the SEMS libraries just add following lines to your `pom.xml`
 
-```
+```xml
 <repositories>
     <repository>
         <id>sems-maven-repository-releases</id>
@@ -52,7 +52,7 @@ To deploy to this Maven repository you first of all need access to this git repo
 further you need to have ssh access to GitHub configured.
 
 Next integrate following lines into your `pom.xml`:
-```
+```xml
 <pluginRepositories>
     <!-- synergian wagon-ssh -->
     <pluginRepository>
