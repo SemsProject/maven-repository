@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>de.unirostock.sems</groupId>
+  <artifactId>CombineArchiveWeb</artifactId>
+  <versioning>
+    <release>0.5.6</release>
+    <versions>
+      <version>0.5.6</version>
+    </versions>
+    <lastUpdated>20170127151105</lastUpdated>
+  </versioning>
+</metadata>
