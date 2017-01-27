@@ -5,8 +5,8 @@ This is the [SEMS](http://sems.uni-rostock.de) maven repository, containing all 
 within the SEMS project, along with 3rd party libraries, which might be required to build some of the tools or libraries.
 This repository contains two branches:
 
-  * **[releases](tree/releases)** containing all stable releases
-  * **[snapshots](tree/snapshots)** containing all test and unstable builds
+  * **[releases](https://github.com/SemsProject/maven-repository/tree/releases)** containing all stable releases
+  * **[snapshots](https://github.com/SemsProject/maven-repository/tree/snapshots)** containing all test and unstable builds
 
 License
 -------
