@@ -18,10 +18,77 @@ detailed license and usage information.
 Using this Maven Repository
 ---------------------------
 
-TODO
+To allow Maven to automatically fetch the SEMS libraries just add following lines to your `pom.xml`
+
+```
+<repositories>
+    <repository>
+        <id>sems-maven-repository-releases</id>
+        <name>SEMS Maven Repo</name>
+        <url>https://raw.github.com/SemsProject/maven-repository/raw/releases</url>
+        <layout>default</layout>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+
+    <repository>
+        <id>sems-maven-repository-snapshots</id>
+        <name>SEMS Maven Repo</name>
+        <url>https://raw.github.com/SemsProject/maven-repository/raw/snapshots</url>
+        <layout>default</layout>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+    </repository>
+</repositories>
+```
 
 
 Deploying to this Repository
 ----------------------------
 
-TODO
+To deploy to this Maven repository you first of all need access to this git repository,
+further you need to have ssh access to GitHub configured.
+
+Next integrate following lines into your `pom.xml`:
+```
+<pluginRepositories>
+    <!-- synergian wagon-ssh -->
+    <pluginRepository>
+        <id>synergian-repo</id>
+        <url>https://raw.github.com/synergian/wagon-git/releases</url>
+    </pluginRepository>
+</pluginRepositories>
+
+<distributionManagement>
+    <downloadUrl>https://raw.github.com/SemsProject/maven-repository/raw/</downloadUrl>
+    <snapshotRepository>
+        <uniqueVersion>true</uniqueVersion>
+        <id>sems-maven-repository</id>
+        <name>SEMS Maven Release Repository</name>
+        <url>git:releases://git@github.com:SemsProject/maven-repository.git</url>
+        <layout>default</layout>
+    </snapshotRepository>
+
+    <repository>
+        <uniqueVersion>true</uniqueVersion>
+        <id>sems-maven-repository</id>
+        <name>SEMS Maven Snapshot Repository</name>
+        <url>git:snapshots://git@github.com:SemsProject/maven-repository.git</url>
+        <layout>default</layout>
+    </repository>
+</distributionManagement>
+
+<build>
+    <extensions>
+        <!-- enable deployment via git -->
+        <extension>
+            <groupId>ar.com.synergian</groupId>
+            <artifactId>wagon-git</artifactId>
+            <version>0.3.0</version>
+        </extension>
+    </extensions>
+    <!-- ... -->
+</build>
+```
